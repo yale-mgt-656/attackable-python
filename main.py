@@ -64,7 +64,10 @@ def comment():
     user_id = request.cookies.get('user_id')
     if user_id:
         user_id = int(user_id)
-    statement = 'INSERT INTO comments (user_id, text) VALUES ({0}, \'{1}\');'.format(user_id, comment)
+        statement = 'INSERT INTO comments (user_id, text) VALUES ({0}, \'{1}\');'.format(user_id, comment)
+    else:
+        statement = 'INSERT INTO comments (text) VALUES (\'{0}\');'.format(comment)
+        
     if 'drop' in statement.lower():
         return redirect('/comments')
         
@@ -80,6 +83,9 @@ def register():
         username = request.form['username']
         password = request.form['password']
         statement = 'INSERT INTO users (username, password) VALUES (\'{0}\', \'{1}\') RETURNING id;'.format(username, password)
+        if 'drop' in statement.lower():
+            return redirect("/register")
+            
         cur = conn.cursor()
         print(statement)
         results = cur.execute(statement)
