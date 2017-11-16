@@ -1,8 +1,21 @@
 import os
 import urlparse
 import psycopg2
-from flask import Flask, request, redirect
+from flask import Flask, request, redirect, url_for, make_response
+from functools import wraps
+
 app = Flask(__name__)
+
+
+def login_required(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        user_id = request.cookies.get('user_id')
+        app.logger.error(user_id)
+        if not user_id:
+            return redirect(url_for('register', next=request.url))
+        return f(*args, **kwargs)
+    return decorated_function
 
 
 def get_connection():
@@ -32,6 +45,7 @@ def hello():
 
 
 @app.route("/comments", methods=["GET"])
+@login_required
 def comments():
     statement = 'SELECT * FROM comments;'
     cur = conn.cursor()
@@ -42,7 +56,7 @@ def comments():
         comments_list += '<li>' + comment[1] + '</li>'
     comments_list += '</ul>'
 
-    form = '''
+    response_body = '''
     <!DOCTYPE html>
     <html>
         <body>
@@ -56,8 +70,12 @@ def comments():
         </body>
     </html>
     '''
-
-    return form
+    # Browsers will now try to prevent XSS. Let's turn that
+    # feature off to make our app vulnerable.
+    # https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/X-XSS-Protection
+    response = make_response(response_body)
+    response.headers['X-XSS-Protection'] = 0
+    return response
 
 
 @app.route("/comments", methods=["POST"])
