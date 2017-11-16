@@ -1,26 +1,21 @@
-     ,-----.,--.                  ,--. ,---.   ,--.,------.  ,------.
-    '  .--./|  | ,---. ,--.,--. ,-|  || o   \  |  ||  .-.  \ |  .---'
-    |  |    |  || .-. ||  ||  |' .-. |`..'  |  |  ||  |  \  :|  `--, 
-    '  '--'\|  |' '-' ''  ''  '\ `-' | .'  /   |  ||  '--'  /|  `---.
-     `-----'`--' `---'  `----'  `---'  `--'    `--'`-------' `------'
-    ----------------------------------------------------------------- 
+# Attackable Python
 
+A demo web app that shows "worst practices". The app is vulnerable
+to XSS, SQL Injection, and CSRF attacks.
 
-Hi there! Welcome to Cloud9 IDE!
+To run the app, you'll need a Postgres database, which you create
+using `createdb` and then you'll need to create the schema using
+the `init.sql` script. This sequence might be like the following
+if you're running postgres on localhost with the default settings
+and no need for a password.
 
-To get you started, we included a small hello world application.
+```
+createdb attackable
+psql attackable <init.sql
+```
 
-1) Open the hello-world.html file
+Then, you'd start the web app like
 
-2) Click on the Preview button to open a live preview pane
-
-3) Make some changes to the file, save, watch the preview, and have fun!
-
-Happy coding!
-The Cloud9 IDE team
-
-
-## Support & Documentation
-
-Visit http://docs.c9.io for documentation, or http://support.c9.io for support.
-To watch some training videos, visit http://www.youtube.com/user/c9ide
+```
+DATABASE_URL="postgresql://localhost/attackable" python ./main.py
+```
