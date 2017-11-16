@@ -61,13 +61,24 @@ def comments():
     <html>
         <body>
             <h1>Comments</h1>
+            <div>
     ''' + comments_list + '''
+            </div>
+            <div>
             <form method="POST">
 <textarea rows="5" cols="50" name="comment">
 </textarea>
                 <br>
                 <input type="submit">
             </form>
+            </div>
+            <div style="margin-top:5em">
+                You can view the source of this application
+                at <a href="https://github.com/yale-mgt-656/attackable-python">
+                https://github.com/yale-mgt-656/attackable-python
+                </a>
+            </div>
+
         </body>
     </html>
     '''
