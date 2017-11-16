@@ -63,7 +63,8 @@ def comments():
             <h1>Comments</h1>
     ''' + comments_list + '''
             <form method="POST">
-                <input name="comment" type="text">
+<textarea rows="5" cols="50" name="comment">
+</textarea>
                 <br>
                 <input type="submit">
             </form>
